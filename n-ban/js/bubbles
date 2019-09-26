@@ -1,0 +1,38 @@
+class Bubble {
+ constructor(x, y, z, texture) {
+   this.x = 200;
+   this.y = 150;
+   this.z = 200;
+   this.texture = random(pictures);
+ }
+
+ // move() {
+ //   this.x = this.x + random(-5, 5);
+ //   this.y = this.y + random(-5, 5);
+ // }
+
+ show() {
+   texture(this.texture);
+   this.bx = box(this.x, this.y, this.z);
+ }
+
+ plan() {
+   texture(this.texture);
+   this.pln = plane(this.x+400, this.y+300);
+ }
+
+ huge(){
+   texture(this.texture);
+   this.bx = box(this.x*4, this.y*3, this.z*4);
+ }
+
+}
+
+function globz(rad, xpos, ypos, img) {
+  push();
+  //translate(p5.Vector.fromAngle(millis() / 2000, 40));
+  texture(img);
+  sphere(rad, xpos, ypos);
+  pop();
+  //translate(acos(sin(millis()/1000))*300, 0, 0);
+}
