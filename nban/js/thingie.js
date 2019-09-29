@@ -13,8 +13,6 @@ class Thingie {
     scale(this.size);
     texture(this.img);
     stroke(255);
-    //noFill();
-    //normalMaterial();
     model(this.modL);
   }
   move() {

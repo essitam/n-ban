@@ -15,7 +15,9 @@ class Glob {
     sphere(this.rad, this.xdet, this.ydet);
   }
    move() {
-     translate((millis()*this.xrate)% 1200 - 600 + this.xpos, (millis()*this.yrate)% 1200 - 600 + this.ypos);
+     var xdummy = (millis()*this.xrate)% 1200 - 600 + this.xpos;
+     var ydummy = (millis()*this.yrate)% 1200 - 600 + this.ypos;
+     translate(xdummy, ydummy);
    }
    rot_ate(){
      rotateX((millis()/1000)*(PI / (30.0*(1+this.xrate))) + radians(180));
