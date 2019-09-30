@@ -1,118 +1,54 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<!-- <title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style> -->
-		<title>three.js webgl - interactive cubes</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<!-- <link type="text/css" rel="stylesheet" href="main.css"> -->
-		<style>
-			body {
-				background-color: #f0f0f0;
-				color: #444;
-			}
-			a {
-				color: #08f;
-			}
-		</style>
-	</head>
-	<body>
-		<script src="js/three.js"></script>
-		<script>
-		var camera, renderer, scene, raycaster;
-		var radius = 100, theta = 0;
-		var mouse = new THREE.Vector2(), INTERSECTED;
-		init();
-		animate();
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>non-being ad nauseam</title>
+    <style> body {padding: 0; margin: 0;} </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+    <script src="js/thingie-icon.js"></script>
+    <style>
+    html, body{
+      background: #1db5a1;
+    }
+        div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 6s; /* Safari 4.0 - 8.0 */
+        animation-name: example;
+        animation-duration: 6s;
+        animation-iteration-count: infinite;
+      }
 
-function init(){
-			scene = new THREE.Scene();
-			scene.background = new THREE.Color( 0xffffff );
-			camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 2000 );
-			// camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 2000 );
+      /* Safari 4.0 - 8.0 */
+      @-webkit-keyframes example {
+        0% { color: #db0f35; }
+        50% { color: #1a00bf; }
+        100% { color: #db0f35; }
+        0% {background-color: #db0f35;}
+        33% {background-color: #1d52b5;}
+        66% {background-color: #ffe136;}
+        100% {background-color: #db0f35;}
+      }
 
+      /* Standard syntax */
+      @keyframes example {
+        0% { color: #db0f35; }
+        50% { color: #1a00bf; }
+        100% { color: #db0f35; }
+        0% {background-color: #db0f35;}
+        33% {background-color: #1d52b5;}
+        66% {background-color: #ffe136;}
+        100% {background-color: #db0f35;}
+      }
+    </style>
+  </head>
+  <body>
+    <script src="js/drag-thingie.js"></script>
 
-			var growth = new THREE.SphereGeometry( 1, 24, 24 );
-			// const loader = new THREE.TextureLoader();
-      // const material = new THREE.MeshBasicMaterial({
-      //   map: loader.load("assets/growth-swirl.jpg"),
-      // });
-			// const material = ;
-
-			for ( var i = 0; i < 100; i ++ ) {
-					var glob = new THREE.Mesh( growth, new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff }) );
-					glob.position.x = Math.random() * 200 - 100;
-					glob.position.y = Math.random() * 200 - 100;
-					glob.position.z = (-100)*Math.random();
-					glob.rotation.x = Math.random() * 2 * Math.PI;
-					glob.rotation.y = Math.random() * 2 * Math.PI;
-					glob.rotation.z = Math.random() * 2 * Math.PI;
-					glob.scale.x = Math.random() + 1.5;
-					glob.scale.y = Math.random() + 1.5;
-					glob.scale.z = Math.random() + 1.5;
-					scene.add(glob);
-				}
-
-				raycaster = new THREE.Raycaster();
-
-				renderer = new THREE.WebGLRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				document.body.appendChild( renderer.domElement );
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-
-				// camera.position.set(0, 0, 200);
-
-
-}
-function onDocumentMouseMove( event ) {
-	event.preventDefault();
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-}
-
-
-						function animate () {
-			requestAnimationFrame(animate);
-
-			// glob.rotation.x += 0.01;
-			// glob.rotation.y += 0.01;
-			//
-			// glob.position.set(2*Math.sin(ts/1000), 2*Math.cos(ts/1000), 0);
-							render();
-		}
-		function render () {
-			theta += 0.1;
-							camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
-							camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
-							camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
-							camera.lookAt( scene.position );
-							camera.updateMatrixWorld();
-							raycaster.setFromCamera( mouse, camera );
-											var intersects = raycaster.intersectObjects( scene.children );
-											if ( intersects.length > 0 ) {
-												if ( INTERSECTED != intersects[ 0 ].glob ) {
-													if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-													INTERSECTED = intersects[ 0 ].glob;
-													INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-													INTERSECTED.material.emissive.setHex( 0xff0000 );
-												}
-											} else {
-												if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-												INTERSECTED = null;
-											}
-			renderer.render(scene, camera);
-
-
-		}
-
-
-		// animate();
-
-		</script>
-	</body>
+  </body>
 </html>
