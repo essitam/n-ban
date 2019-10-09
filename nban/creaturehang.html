@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>non-being ad nauseam</title>
+    <style> body {padding: 0; margin: 0;} </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+    <script src="js/thingie-icon.js"></script>
+    <style>
+    html, body{
+      background: #1db5a1;
+    }
+        div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 6s; /* Safari 4.0 - 8.0 */
+        animation-name: example;
+        animation-duration: 6s;
+        animation-iteration-count: infinite;
+      }
+
+      /* Safari 4.0 - 8.0 */
+      @-webkit-keyframes example {
+        0% { color: #db0f35; }
+        50% { color: #1a00bf; }
+        100% { color: #db0f35; }
+        0% {background-color: #db0f35;}
+        33% {background-color: #1d52b5;}
+        66% {background-color: #ffe136;}
+        100% {background-color: #db0f35;}
+      }
+
+      /* Standard syntax */
+      @keyframes example {
+        0% { color: #db0f35; }
+        50% { color: #1a00bf; }
+        100% { color: #db0f35; }
+        0% {background-color: #db0f35;}
+        33% {background-color: #1d52b5;}
+        66% {background-color: #ffe136;}
+        100% {background-color: #db0f35;}
+      }
+    </style>
+  </head>
+  <body>
+    <script src="js/drag-thingie.js"></script>
+
+  </body>
+</html>

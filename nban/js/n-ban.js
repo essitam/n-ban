@@ -7,9 +7,9 @@ let globz = [];
 let thingies = [];
 
 function preload(){
-  growth = loadImage("assets/growth-swirl.png");
-  splash = loadImage("assets/growthball.png");
-  ip = loadImage("assets/ip.png");
+  growth = loadImage("assets/icons/growth-swirl.png");
+  splash = loadImage("assets/icons/growthball.png");
+  ip = loadImage("assets/icons/ip.png");
 
   teapot = loadModel('assets/teapot.obj', true);
 }
@@ -17,7 +17,7 @@ function preload(){
 function setup() {
   createCanvas(width, height, WEBGL);
   for(let i = 0; i < 5; i++) {
-    globz[i] = new Glob(ip, random(50, 100), 24, 24, random(0, 20), random(0, 20), random(0.1, 0.3), random(0.1, 0.3));
+    globz[i] = new Glob(growth, random(50, 100), 24, 24, random(0, 20), random(0, 20), random(0.1, 0.3), random(0.1, 0.3));
     globz[i+5] = new Glob(splash, random(10, 25), 24, 24, random(0, 20), random(0, 20), random(0.1, 0.3), random(0.1, 0.3));
   }
   for(let j = 0; j < 3; j++) {

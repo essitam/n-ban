@@ -18,63 +18,9 @@
 				overflow: hidden;
 			}
 
-			#edge0ps {
-				position: absolute;
-				top: 200px;
-				width: 100%;
-				font-family: 'Helvetica', 'Arial', sans-serif;
-				color: #ffffff;
-				font-style: italic;
-				font-weight: bold;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
-
-			#lines {
-				position: absolute;
-				top: 240px;
-				width: 100%;
-				font-family: 'Helvetica', 'Arial', sans-serif;
-				color: #ffffff;
-				font-style: italic;
-				font-weight: bold;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
 		</style>
 	</head>
 	<body>
-		<!-- <div id="edge0ps">edge.ops</div>
-		<b>
-		<div id="lines">peripheral collectors
-toward fine tuned tendings
-edgewise rotations
-reeling rolling
-nimble in ways a flaunting hollows
-long billows alighten lofty
-glooping bog gulping stodge
-porous plobs un/in-folding
-the widest spice
-boulversé
-blistering, swollen, gliding,
-peripheral jitters, landing, liken
-here they roll and clump and bounce
-speedy edge operators
-flagrant oscillators
-full ledge pendulous parsings
-onieric trajectories
-creatures lustfully cling to curves
-screaching with laughter through latent surrounds
-tenuous agitations see
-an ecology of speeds, a processual rotunda
-finding tinies in-between
-an operative-consistency holds a field in its spread
-crispy green rhythmmachines,
-slow big and blowy
-oozing fabulatory ontologies of vibrational force
-no tax as yet grown on them</div> -->
 		<div id="canvas-wrapper" aria-label="non-being ad nauseam"></div>
 		<script type="module">
 
@@ -84,19 +30,13 @@ no tax as yet grown on them</div> -->
 			var container;
 			var camera, scene, raycaster, renderer, sphereInter;
 			var growthTransform, spongeTransform, ippTransform, runningTransform, limboTransform;
-
 			var mouse = new THREE.Vector2();
 			var radius = 100, theta = 0;
 			var gs = 0;
-			var gi = 0;
 			var ss = 0;
-			var si = 0;
 			var ps = 0;
-			var pi = 0;
 			var rs = 0;
-			var ri = 0;
 			var ls = 0;
-			var li = 0;
 
 			let mouseX = 0;
 			let mouseY = 0;
@@ -144,7 +84,7 @@ no tax as yet grown on them</div> -->
 
 				//MOUSE INTERACTIONS
 				raycaster = new THREE.Raycaster();
-				raycaster.linePrecision = 5;
+				raycaster.linePrecision = 3;
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
@@ -154,11 +94,8 @@ no tax as yet grown on them</div> -->
 
 				//CREATE THINGIES
 
-
-
 				const cubeSize = 120;
 				const glob = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
-				const field = new THREE.PlaneGeometry(cubeSize*2, cubeSize*2, cubeSize, cubeSize);
 
 				//GROWTH
 				const growth = new THREE.TextureLoader();
@@ -193,25 +130,18 @@ no tax as yet grown on them</div> -->
 
 				//SPONGES
 				const sponge = new THREE.TextureLoader();
-				const spongeMatOrange = new THREE.MeshBasicMaterial({
-				  map: sponge.load('assets/icons/orange-ip.png'), transparent: true
-				});
-				const spongeMatBlue = new THREE.MeshBasicMaterial({
+				const spongeMat = new THREE.MeshBasicMaterial({
 				  map: sponge.load('assets/icons/sponge-ip.png'), transparent: true
 				});
 				spongeTransform = new THREE.Object3D();
 
 				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if(Math.random()<0.5){
-						object = new THREE.Mesh(glob, spongeMatOrange );
-					} else {
-						object = new THREE.Mesh(glob, spongeMatBlue );
-					}
+
+					const object = new THREE.Mesh(glob, spongeMat);
 					const dist = farDist / 3;
 					const distDouble = dist * 2;
 					const tau = 2 * Math.PI;
-					const size = (Math.random()+0.5)*2;
+					const size = Math.random()+0.2;
 
 					object.position.x = Math.random() * distDouble - dist;
 					object.position.y = Math.random() * distDouble - dist;
@@ -234,19 +164,11 @@ no tax as yet grown on them</div> -->
 				const ippMat = new THREE.MeshBasicMaterial({
 				  map: ipp.load('assets/icons/ip2.png'), transparent: true
 				});
-				const octoMat = new THREE.MeshBasicMaterial({
-				  map: ipp.load('assets/icons/octo.png'), transparent: true
-				});
 				ippTransform = new THREE.Object3D();
 
 				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if (Math.random()<0.5){
-						object = new THREE.Mesh(glob, ippMat);
-					} else {
-						object = new THREE.Mesh(glob, octoMat);
-					}
 
+					const object = new THREE.Mesh(glob, ippMat);
 					const dist = farDist / 3;
 					const distDouble = dist * 2;
 					const tau = 2 * Math.PI;
@@ -273,18 +195,11 @@ no tax as yet grown on them</div> -->
 				const runningMat = new THREE.MeshBasicMaterial({
 				  map: running.load('assets/icons/running.png'), transparent: true
 				});
-				const guavaMat = new THREE.MeshBasicMaterial({
-				  map: running.load('assets/icons/guavas.png'), transparent: true
-				});
 				runningTransform = new THREE.Object3D();
 
 				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if(Math.random()<0.5){
-						object = new THREE.Mesh(glob, runningMat);
-					} else {
-						object = new THREE.Mesh(field, guavaMat);
-					}
+
+					const object = new THREE.Mesh(glob, runningMat);
 					const dist = farDist / 3;
 					const distDouble = dist * 2;
 					const tau = 2 * Math.PI;
@@ -364,10 +279,10 @@ no tax as yet grown on them</div> -->
 			function onMouseWheel( event ) {
 				//event.preventDefault();
 				//console.log(event);
-				dummyX = Math.min(Math.max(dummyX + event.deltaX, 0), 800);
-				dummyY = Math.min(Math.max(dummyY + event.deltaY, 100), 800);
-				mouseFX.coordinates(dummyX, dummyY);
+				dummyX = Math.min(Math.max(dummyX + event.deltaX, -200), 1000);
+				dummyY = Math.min(Math.max(dummyY + event.deltaY, -200), 1000);
 				console.log([dummyX, dummyY]);
+				mouseFX.coordinates(dummyX, dummyY);
 			}
 			function onDocumentMouseMove( event ) {
 				//console.log(event);
@@ -386,81 +301,49 @@ no tax as yet grown on them</div> -->
 				var interIpp = raycaster.intersectObjects( ippTransform.children, true );
 				var interRunning = raycaster.intersectObjects( runningTransform.children, true );
 				var interLimbo = raycaster.intersectObjects( limboTransform.children, true );
-
 				if ( interGrowth.length > 0 ) {
-
-					for(let i=0;i<growthTransform.children.length; i++) {
-						if (interGrowth[0].object == growthTransform.children[i]) {
-							gi = i;
-							gs = 0;
-							audioLoader.load('/assets/buffers/arp.mp3', function(buffer) {
-								arp.setBuffer(buffer);
-								arp.setVolume( 1.0 );
-								arp.play();
-							});
-						}
-					}
-
+					gs = 0;
+					audioLoader.load('/assets/buffers/arp.mp3', function(buffer) {
+						arp.setBuffer(buffer);
+						arp.setVolume( 1.0 );
+						arp.play();
+					});
 				}
 				if ( interSponge.length > 0 ) {
-
-					for(let i=0;i<spongeTransform.children.length; i++) {
-						if (interSponge[0].object == spongeTransform.children[i]) {
-							si = i;
-							ss = 0;
-							audioLoader.load('/assets/buffers/buoyverse.mp3', function(buffer) {
-								buoys.setBuffer(buffer);
-								buoys.setVolume( 1.0 );
-								buoys.play();
-							});
-						}
-					}
-
+					ss = 0;
+					audioLoader.load('/assets/buffers/buoyverse.mp3', function(buffer) {
+						buoys.setBuffer(buffer);
+						buoys.setVolume( 1.0 );
+						buoys.play();
+					});
 				}
 				if ( interIpp.length > 0 ) {
-
-					for(let i=0;i<ippTransform.children.length; i++) {
-						if (interIpp[0].object == ippTransform.children[i]) {
-							pi = i;
-							ps = 0;
-							audioLoader.load('/assets/buffers/maap.mp3', function(buffer) {
-								maap.setBuffer(buffer);
-								maap.setVolume( 1.0 );
-								maap.play();
-							});
-						}
-					}
-
+					ps = 0;
+					audioLoader.load('/assets/buffers/maap.mp3', function(buffer) {
+						maap.setBuffer(buffer);
+						maap.setVolume( 1.0 );
+						maap.play();
+					});
 				}
 				if ( interRunning.length > 0 ) {
-					for(let i=0;i<runningTransform.children.length; i++) {
-						if (interRunning[0].object == runningTransform.children[i]) {
-							ri = i;
-							rs = 0;
-							audioLoader.load('/assets/buffers/crispykeys.mp3', function(buffer) {
-								crispy.setBuffer(buffer);
-								crispy.setVolume( 1.0 );
-								crispy.play();
-							});
-						}
-					}
-
+					rs = 0;
+					audioLoader.load('/assets/buffers/crispykeys.mp3', function(buffer) {
+						crispy.setBuffer(buffer);
+						crispy.setVolume( 1.0 );
+						crispy.play();
+					});
 				}
 				if ( interLimbo.length > 0 ) {
-					for(let i=0;i<limboTransform.children.length; i++) {
-						if (interLimbo[0].object == limboTransform.children[i]) {
-							li = i;
-							ls = 0;
-							audioLoader.load('/assets/buffers/globz.mp3', function(buffer) {
-								globbin.setBuffer(buffer);
-								globbin.setVolume( 1.0 );
-								globbin.play();
-							});
-						}
-					}
+					ls = 0;
+					audioLoader.load('/assets/buffers/globz.mp3', function(buffer) {
+						globbin.setBuffer(buffer);
+						globbin.setVolume( 1.0 );
+						globbin.play();
+					});
+				}
+				}
 
-				}
-				}
+
 
 			function animate() {
 				requestAnimationFrame( animate );
@@ -470,24 +353,18 @@ no tax as yet grown on them</div> -->
 			function render() {
 				//move camera view
 				theta += 0.1;
+				gs += 0.1;
+				ss += 0.1;
+				ps += 0.1;
+				rs += 0.1;
+				ls += 0.1;
 
 				camera.position.x += (mouseX - camera.position.x) * 0.05;
 				camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
 
-				for(var i=0; i<14; i++) {
-					growthTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
-					spongeTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 90 + theta ));
-					ippTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( 135 + theta ));
-					runningTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 45 + theta ));
-					limboTransform.children[i].rotation.z = 2*Math.PI*Math.sin( THREE.Math.degToRad( 180 + theta ));
-
-					growthTransform.children[i].position.x = THREE.Math.euclideanModulo(growthTransform.children[i].position.x + 4, farDist/2);
-					spongeTransform.children[i].position.y = THREE.Math.euclideanModulo(spongeTransform.children[i].position.y + 5, farDist/2);
-					ippTransform.children[i].position.x = THREE.Math.euclideanModulo(ippTransform.children[i].position.x + 3, farDist/2);
-					runningTransform.children[i].position.y = THREE.Math.euclideanModulo(runningTransform.children[i].position.y + 2, farDist/2);
-					limboTransform.children[i].position.z = THREE.Math.euclideanModulo(limboTransform.children[i].position.z + 1, farDist/2);
-				}
-
+				// camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				// camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				// camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) ) - 500;
 				camera.lookAt( scene.position );
 				camera.updateMatrixWorld();
 
@@ -501,31 +378,26 @@ no tax as yet grown on them</div> -->
 					sphereInter.visible = false;
 				}
 
-				growthTransform.children[gi].scale.x = 1 + (0.125*Math.sin(0.20*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/4);
-				growthTransform.children[gi].scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/2);
-				growthTransform.children[gi].scale.z = 1 + (0.125*Math.sin(0.23*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs);
+				//scale when group is clicked
+				growthTransform.scale.x = 1 + (0.125*Math.sin(0.166*gs)+0.7)*Math.exp((-1/2)*gs)*Math.sin(2*gs);
+				//growthTransform.scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.7)*2*Math.exp((-1/2)*gs)*Math.sin(2*gs);
+				growthTransform.scale.z = 1 + (0.07*Math.sin(0.11*gs)+0.7)*Math.exp((-1/2)*gs)*Math.sin(2*gs);
 
-				spongeTransform.children[si].scale.x = 1 + (0.125*Math.sin(0.20*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss + Math.PI/4);
-				spongeTransform.children[si].scale.y = 1 + (0.125*Math.sin(0.25*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss + Math.PI/2);
-				spongeTransform.children[si].scale.z = 1 + (0.125*Math.sin(0.23*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss);
+				spongeTransform.scale.x = 1 + (0.125*Math.sin(0.166*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
+				//spongeTransform.scale.y = 1 + (0.125*Math.sin(0.25*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
+				spongeTransform.scale.z = 1 + (0.07*Math.sin(0.11*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
 
-				ippTransform.children[pi].scale.x = 1 + (0.125*Math.sin(0.20*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps + Math.PI/4);
-				ippTransform.children[pi].scale.y = 1 + (0.125*Math.sin(0.25*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps + Math.PI/2);
-				ippTransform.children[pi].scale.z = 1 + (0.125*Math.sin(0.23*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps);
+				ippTransform.scale.x = 1 + (0.125*Math.sin(0.166*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
+				//ippTransform.scale.y = 1 + (0.125*Math.sin(0.25*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
+				ippTransform.scale.z = 1 + (0.07*Math.sin(0.11*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
 
-				runningTransform.children[ri].scale.x = 1 + (0.125*Math.sin(0.20*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs + Math.PI/4);
-				runningTransform.children[ri].scale.y = 1 + (0.125*Math.sin(0.25*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs + Math.PI/2);
-				runningTransform.children[ri].scale.z = 1 + (0.125*Math.sin(0.23*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs);
+				runningTransform.scale.x = 1 + (0.125*Math.sin(0.166*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
+				//runningTransform.scale.y = 1 + (0.125*Math.sin(0.25*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
+				runningTransform.scale.z = 1 + (0.07*Math.sin(0.11*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
 
-				limboTransform.children[li].scale.x = 1 + (0.125*Math.sin(0.20*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls + Math.PI/4);
-				limboTransform.children[li].scale.y = 1 + (0.125*Math.sin(0.25*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls + Math.PI/2);
-				limboTransform.children[li].scale.z = 1 + (0.125*Math.sin(0.23*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls);
-
-				gs += 0.1;
-				ss += 0.1;
-				ps += 0.1;
-				rs += 0.1;
-				ls += 0.1;
+				limboTransform.scale.x = 1 + (0.125*Math.sin(0.166*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
+				//limboTransform.scale.y = 1 + (0.125*Math.sin(0.25*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
+				limboTransform.scale.z = 1 + (0.07*Math.sin(0.11*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
 
 				renderer.render( scene, camera );
 			}
