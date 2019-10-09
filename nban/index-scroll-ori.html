@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>lusty peripheral globz</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script type="text/javascript" src="js/three.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+		<style>
+
+			body {
+				height: 100vh;
+				background-color: #3d30c2; // blue
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div id="canvas-wrapper" aria-label="non-being ad nauseam"></div>
+		<script type="module">
+
+			const nearDist = 0.1;
+			const farDist = 5000;
+
+			var container;
+			var camera, scene, raycaster, renderer, sphereInter;
+			var growthTransform, spongeTransform, ippTransform, runningTransform, limboTransform;
+			var mouse = new THREE.Vector2();
+			var radius = 100, theta = 0;
+			var gs = 0;
+			var ss = 0;
+			var ps = 0;
+			var rs = 0;
+			var ls = 0;
+
+			let mouseX = 0;
+			let mouseY = 0;
+			const mouseFX = {
+				windowHalfX: window.innerWidth / 2,
+				windowHalfY: window.innerHeight / 2,
+				coordinates: function(coordX, coordY) {
+					mouseX = (coordX - mouseFX.windowHalfX) * 10;
+					mouseY = (coordY - mouseFX.windowHalfY) * 10;
+				},
+			};
+
+
+			init();
+			animate();
+
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, nearDist, farDist );
+				camera.position.x = farDist * -2;
+				camera.position.z = 500;
+
+				scene.background = new THREE.Color( "#3d30c2" );
+
+
+
+				//RED INDICATOR SPHERE
+				var geometry = new THREE.SphereBufferGeometry( 5 );
+				var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+				sphereInter = new THREE.Mesh( geometry, material );
+				sphereInter.visible = false;
+				scene.add( sphereInter );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setClearColor("#3d30c2");
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.querySelector("#canvas-wrapper").appendChild(renderer.domElement);
+				//container.appendChild( renderer.domElement );
+
+				//MOUSE INTERACTIONS
+				raycaster = new THREE.Raycaster();
+				raycaster.linePrecision = 3;
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'wheel', onMouseWheel, false );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				//CREATE THINGIES
+
+				const cubeSize = 120;
+				const glob = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
+
+				//GROWTH
+				const growth = new THREE.TextureLoader();
+				const growthMat = new THREE.MeshBasicMaterial({
+					map: growth.load("assets/icons/growth-swirl.png"), transparent: true
+				});
+				growthTransform = new THREE.Object3D();
+
+				for ( var i = 0; i < 14; i ++ ) {
+
+					const object = new THREE.Mesh(glob, growthMat);
+					const dist = farDist / 3;
+					const distDouble = dist * 2;
+					const tau = 2 * Math.PI;
+					const size = Math.random()+0.2;
+
+					object.position.x = Math.random() * distDouble - dist;
+					object.position.y = Math.random() * distDouble - dist;
+					object.position.z = Math.random() * distDouble - dist;
+					object.rotation.x = Math.random() * tau;
+					object.rotation.y = Math.random() * tau;
+					object.rotation.z = Math.random() * tau;
+					object.scale.x = size;
+				  object.scale.y = size;
+				  object.scale.z = size;
+
+					growthTransform.add( object );
+				}
+				scene.add( growthTransform );
+
+
+
+				//SPONGES
+				const sponge = new THREE.TextureLoader();
+				const spongeMat = new THREE.MeshBasicMaterial({
+				  map: sponge.load('assets/icons/sponge-ip.png'), transparent: true
+				});
+				spongeTransform = new THREE.Object3D();
+
+				for ( var i = 0; i < 14; i ++ ) {
+
+					const object = new THREE.Mesh(glob, spongeMat);
+					const dist = farDist / 3;
+					const distDouble = dist * 2;
+					const tau = 2 * Math.PI;
+					const size = Math.random()+0.2;
+
+					object.position.x = Math.random() * distDouble - dist;
+					object.position.y = Math.random() * distDouble - dist;
+					object.position.z = Math.random() * distDouble - dist;
+					object.rotation.x = Math.random() * tau;
+					object.rotation.y = Math.random() * tau;
+					object.rotation.z = Math.random() * tau;
+					object.scale.x = size;
+					object.scale.y = size;
+					object.scale.z = size;
+
+					spongeTransform.add( object );
+				}
+				scene.add( spongeTransform );
+
+
+
+				//IPS
+				const ipp = new THREE.TextureLoader();
+				const ippMat = new THREE.MeshBasicMaterial({
+				  map: ipp.load('assets/icons/ip2.png'), transparent: true
+				});
+				ippTransform = new THREE.Object3D();
+
+				for ( var i = 0; i < 14; i ++ ) {
+
+					const object = new THREE.Mesh(glob, ippMat);
+					const dist = farDist / 3;
+					const distDouble = dist * 2;
+					const tau = 2 * Math.PI;
+					const size = Math.random()+0.2;
+
+					object.position.x = Math.random() * distDouble - dist;
+					object.position.y = Math.random() * distDouble - dist;
+					object.position.z = Math.random() * distDouble - dist;
+					object.rotation.x = Math.random() * tau;
+					object.rotation.y = Math.random() * tau;
+					object.rotation.z = Math.random() * tau;
+					object.scale.x = size;
+					object.scale.y = size;
+					object.scale.z = size;
+
+					ippTransform.add( object );
+				}
+				scene.add( ippTransform );
+
+
+
+				//RUNNING
+				const running = new THREE.TextureLoader();
+				const runningMat = new THREE.MeshBasicMaterial({
+				  map: running.load('assets/icons/running.png'), transparent: true
+				});
+				runningTransform = new THREE.Object3D();
+
+				for ( var i = 0; i < 14; i ++ ) {
+
+					const object = new THREE.Mesh(glob, runningMat);
+					const dist = farDist / 3;
+					const distDouble = dist * 2;
+					const tau = 2 * Math.PI;
+					const size = Math.random()+0.2;
+
+					object.position.x = Math.random() * distDouble - dist;
+					object.position.y = Math.random() * distDouble - dist;
+					object.position.z = Math.random() * distDouble - dist;
+					object.rotation.x = Math.random() * tau;
+					object.rotation.y = Math.random() * tau;
+					object.rotation.z = Math.random() * tau;
+					object.scale.x = size;
+					object.scale.y = size;
+					object.scale.z = size;
+
+					runningTransform.add( object );
+				}
+				scene.add( runningTransform );
+
+				//LIMBO
+				const limbo = new THREE.TextureLoader();
+				const limboMat = new THREE.MeshBasicMaterial({
+				  map: limbo.load('assets/icons/limbo.png'), transparent: true
+				});
+				limboTransform = new THREE.Object3D();
+
+				for ( var i = 0; i < 14; i ++ ) {
+
+					const object = new THREE.Mesh(glob, limboMat);
+					const dist = farDist / 3;
+					const distDouble = dist * 2;
+					const tau = 2 * Math.PI;
+					const size = Math.random()+0.2;
+
+					object.position.x = Math.random() * distDouble - dist;
+					object.position.y = Math.random() * distDouble - dist;
+					object.position.z = Math.random() * distDouble - dist;
+					object.rotation.x = Math.random() * tau;
+					object.rotation.y = Math.random() * tau;
+					object.rotation.z = Math.random() * tau;
+					object.scale.x = size;
+					object.scale.y = size;
+					object.scale.z = size;
+
+					limboTransform.add( object );
+				}
+				scene.add( limboTransform );
+
+
+
+				//INIT END
+			}
+
+			// SOUND
+			var listener = new THREE.AudioListener();
+			camera.add(listener);
+
+			// create a global audio source
+			var arp = new THREE.Audio( listener );
+			var buoys = new THREE.Audio( listener );
+			var crispy = new THREE.Audio( listener );
+			var globbin = new THREE.Audio( listener );
+			var maap = new THREE.Audio( listener );
+
+			// load a sound and set it as the Audio object's buffer
+			var audioLoader = new THREE.AudioLoader();
+
+			//MOUSE INTERACTIONS
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			let dummyX=0;
+			let dummyY=0;
+
+			function onMouseWheel( event ) {
+				//event.preventDefault();
+				//console.log(event);
+				dummyX = Math.min(Math.max(dummyX + event.deltaX, -200), 1000);
+				dummyY = Math.min(Math.max(dummyY + event.deltaY, -200), 1000);
+				console.log([dummyX, dummyY]);
+				mouseFX.coordinates(dummyX, dummyY);
+			}
+			function onDocumentMouseMove( event ) {
+				//console.log(event);
+				event.preventDefault();
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				// mouseFX.coordinates(event.clientX, event.clientY);
+			}
+
+			function onDocumentMouseDown( event ) {
+				event.preventDefault();
+				mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+
+				var interGrowth = raycaster.intersectObjects( growthTransform.children, true );
+				var interSponge = raycaster.intersectObjects( spongeTransform.children, true );
+				var interIpp = raycaster.intersectObjects( ippTransform.children, true );
+				var interRunning = raycaster.intersectObjects( runningTransform.children, true );
+				var interLimbo = raycaster.intersectObjects( limboTransform.children, true );
+				if ( interGrowth.length > 0 ) {
+					gs = 0;
+					audioLoader.load('/assets/buffers/arp.mp3', function(buffer) {
+						arp.setBuffer(buffer);
+						arp.setVolume( 1.0 );
+						arp.play();
+					});
+				}
+				if ( interSponge.length > 0 ) {
+					ss = 0;
+					audioLoader.load('/assets/buffers/buoyverse.mp3', function(buffer) {
+						buoys.setBuffer(buffer);
+						buoys.setVolume( 1.0 );
+						buoys.play();
+					});
+				}
+				if ( interIpp.length > 0 ) {
+					ps = 0;
+					audioLoader.load('/assets/buffers/maap.mp3', function(buffer) {
+						maap.setBuffer(buffer);
+						maap.setVolume( 1.0 );
+						maap.play();
+					});
+				}
+				if ( interRunning.length > 0 ) {
+					rs = 0;
+					audioLoader.load('/assets/buffers/crispykeys.mp3', function(buffer) {
+						crispy.setBuffer(buffer);
+						crispy.setVolume( 1.0 );
+						crispy.play();
+					});
+				}
+				if ( interLimbo.length > 0 ) {
+					ls = 0;
+					audioLoader.load('/assets/buffers/globz.mp3', function(buffer) {
+						globbin.setBuffer(buffer);
+						globbin.setVolume( 1.0 );
+						globbin.play();
+					});
+				}
+				}
+
+
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+
+			function render() {
+				//move camera view
+				theta += 0.1;
+				gs += 0.1;
+				ss += 0.1;
+				ps += 0.1;
+				rs += 0.1;
+				ls += 0.1;
+
+				camera.position.x += (mouseX - camera.position.x) * 0.05;
+				camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
+
+				// camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				// camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+				// camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) ) - 500;
+				camera.lookAt( scene.position );
+				camera.updateMatrixWorld();
+
+				// find intersections
+				raycaster.setFromCamera( mouse, camera );
+				var intersects = raycaster.intersectObjects( scene.children, true );
+				if ( intersects.length > 0 ) {
+					sphereInter.visible = true;
+					sphereInter.position.copy( intersects[ 0 ].point );
+				} else {
+					sphereInter.visible = false;
+				}
+
+				//scale when group is clicked
+				growthTransform.scale.x = 1 + (0.125*Math.sin(0.166*gs)+0.7)*Math.exp((-1/2)*gs)*Math.sin(2*gs);
+				//growthTransform.scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.7)*2*Math.exp((-1/2)*gs)*Math.sin(2*gs);
+				growthTransform.scale.z = 1 + (0.07*Math.sin(0.11*gs)+0.7)*Math.exp((-1/2)*gs)*Math.sin(2*gs);
+
+				spongeTransform.scale.x = 1 + (0.125*Math.sin(0.166*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
+				//spongeTransform.scale.y = 1 + (0.125*Math.sin(0.25*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
+				spongeTransform.scale.z = 1 + (0.07*Math.sin(0.11*ss)+0.7)*Math.exp((-1/2)*ss)*Math.sin(2*ss);
+
+				ippTransform.scale.x = 1 + (0.125*Math.sin(0.166*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
+				//ippTransform.scale.y = 1 + (0.125*Math.sin(0.25*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
+				ippTransform.scale.z = 1 + (0.07*Math.sin(0.11*ps)+0.7)*Math.exp((-1/2)*ps)*Math.sin(2*ps);
+
+				runningTransform.scale.x = 1 + (0.125*Math.sin(0.166*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
+				//runningTransform.scale.y = 1 + (0.125*Math.sin(0.25*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
+				runningTransform.scale.z = 1 + (0.07*Math.sin(0.11*rs)+0.7)*Math.exp((-1/2)*rs)*Math.sin(2*rs);
+
+				limboTransform.scale.x = 1 + (0.125*Math.sin(0.166*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
+				//limboTransform.scale.y = 1 + (0.125*Math.sin(0.25*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
+				limboTransform.scale.z = 1 + (0.07*Math.sin(0.11*ls)+0.7)*Math.exp((-1/2)*ls)*Math.sin(2*ls);
+
+				renderer.render( scene, camera );
+			}
+
+		</script>
+
+	</body>
+</html>

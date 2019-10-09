@@ -7,8 +7,9 @@ let globz = [];
 let thingies = [];
 
 function preload(){
-  growth = loadImage("assets/growth-swirl.png");
-  splash = loadImage("assets/growthball.png");
+  growth = loadImage("assets/icons/growth-swirl.png");
+  splash = loadImage("assets/icons/growthball.png");
+  ip = loadImage("assets/icons/ip.png");
 
   teapot = loadModel('assets/teapot.obj', true);
 }
