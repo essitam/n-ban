@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>lusty peripheral globz</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script type="text/javascript" src="js/three.js"></script>
+		<script src="../../../three/test.js"></script>
+		<style>
+
+			body {
+				height: 100vh;
+				background-color: #3d30c2; // blue
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+/*
+			#edge0ps {
+				position: absolute;
+				top: 200px;
+				width: 100%;
+				font-family: 'Helvetica', 'Arial', sans-serif;
+				color: #ffffff;
+				font-style: italic;
+				font-weight: bold;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+
+			#lines {
+				position: absolute;
+				top: 240px;
+				width: 100%;
+				font-family: 'Helvetica', 'Arial', sans-serif;
+				color: #ffffff;
+				font-style: italic;
+				font-weight: bold;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			} */
+		</style>
+	</head>
+	<body>
+		<!-- <div id="edge0ps">edge.ops</div>
+		<b>
+		<div id="lines">peripheral collectors
+toward fine tuned tendings
+edgewise rotations
+reeling rolling
+nimble in ways a flaunting hollows
+long billows alighten lofty
+glooping bog gulping stodge
+porous plobs un/in-folding
+the widest spice
+boulversé
+blistering, swollen, gliding,
+peripheral jitters, landing, liken
+here they roll and clump and bounce
+speedy edge operators
+flagrant oscillators
+full ledge pendulous parsings
+onieric trajectories
+creatures lustfully cling to curves
+screaching with laughter through latent surrounds
+tenuous agitations see
+an ecology of speeds, a processual rotunda
+finding tinies in-between
+an operative-consistency holds a field in its spread
+crispy green rhythmmachines,
+slow big and blowy
+oozing fabulatory ontologies of vibrational force
+no tax as yet grown on them</div> -->
+		<div id="canvas-wrapper" aria-label="non-being ad nauseam"></div>
+		<script type="module">
+
+			const nearDist = 0.1;
+			const farDist = 5000;
+
+			var container;
+			var camera, scene, raycaster, renderer, sphereInter;
+			var growthTransform, spongeTransform, ippTransform, runningTransform, limboTransform;
+
+			init();
+			animate();
+
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, nearDist, farDist );
+				camera.position.x = farDist * -2;
+				camera.position.z = 500;
+
+				scene.background = new THREE.Color( "#3d30c2" );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setClearColor("#3d30c2");
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.querySelector("#canvas-wrapper").appendChild(renderer.domElement);
+				//container.appendChild( renderer.domElement );
+
+
+				// create a canvas element
+
+					const field = new THREE.PlaneGeometry(240, 240, 240, 240);
+					var canvas1 = document.createElement('canvas');
+					var context1 = canvas1.getContext('2d');
+					context1.font = "Bold 40px Arial";
+					context1.fillStyle = "rgba(255,0,0,0.95)";
+				    context1.fillText('Hello, world!', 0, 50);
+
+					// canvas contents will be used for a texture
+					var texture1 = new THREE.Texture(canvas1)
+					//texture1.needsUpdate = true;
+
+				    var material1 = new THREE.MeshBasicMaterial( {map: texture1, side:THREE.DoubleSide } );
+				    //material1.transparent = true;
+
+
+				    var mesh = new THREE.Mesh( field, material1);
+					mesh.position.set(0,50,0);
+					scene.add( mesh );
+
+				}
+
+
+
+
+
+					function animate()
+						{
+						    requestAnimationFrame( animate );
+							render();
+						}
+
+
+						function render()
+						{
+							renderer.render( scene, camera );
+						}
+
+						</script>
+
+					</body>
+				</html>
