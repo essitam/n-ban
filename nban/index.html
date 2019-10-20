@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>lusty peripheral globz</title>
+		<title>Speedy-Edge-Operators</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script type="text/javascript" src="js/three.js"></script>
@@ -12,13 +12,19 @@
 
 			body {
 				height: 100vh;
-				background-color: #3d30c2; // blue
-				margin: 0;
-				padding: 0;
+				/* background-color: #3d30c2; // ultramaine #7db8af; seafoam chalk //  */
+				background-image: linear-gradient(to left, #7db8af, #3d30c2);
+				/* margin: 0;
+				padding: 0; */
 				overflow: hidden;
 			}
 
-			#edge0ps {
+			/* body {
+	  margin: 0;
+		background-image: linear-gradient(#7db8af, #3d30c2);
+} */
+
+			/* #edge0ps {
 				position: absolute;
 				top: 200px;
 				width: 100%;
@@ -42,7 +48,7 @@
 				text-align: center;
 				z-index: 100;
 				display:block;
-			}
+			} */
 		</style>
 	</head>
 	<body>
@@ -84,6 +90,7 @@ no tax as yet grown on them</div> -->
 			var container;
 			var camera, scene, raycaster, renderer, sphereInter;
 			var growthTransform, spongeTransform, ippTransform, runningTransform, limboTransform;
+			var line1Transform, line2Transform, line3Transform;
 
 			var mouse = new THREE.Vector2();
 			var radius = 100, theta = 0;
@@ -124,23 +131,12 @@ no tax as yet grown on them</div> -->
 				camera.position.x = farDist * -2;
 				camera.position.z = 500;
 
-				scene.background = new THREE.Color( "#3d30c2" );
-
-
-
-				//RED INDICATOR SPHERE
-				var geometry = new THREE.SphereBufferGeometry( 5 );
-				var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-				sphereInter = new THREE.Mesh( geometry, material );
-				sphereInter.visible = false;
-				scene.add( sphereInter );
-
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setClearColor("#3d30c2");
+				renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true } );
+				//renderer.setClearColor("#3d30c2");
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.querySelector("#canvas-wrapper").appendChild(renderer.domElement);
-				//container.appendChild( renderer.domElement );
+				container.appendChild( renderer.domElement );
 
 				//MOUSE INTERACTIONS
 				raycaster = new THREE.Raycaster();
@@ -153,12 +149,9 @@ no tax as yet grown on them</div> -->
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				//CREATE THINGIES
-
-
-
 				const cubeSize = 120;
-				const glob = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
-				const field = new THREE.PlaneGeometry(cubeSize*2, cubeSize*2, cubeSize, cubeSize);
+				const glob = new THREE.SphereBufferGeometry(cubeSize, cubeSize/3, cubeSize/3);
+				const field = new THREE.PlaneBufferGeometry(cubeSize*2, cubeSize*2);
 
 				//GROWTH
 				const growth = new THREE.TextureLoader();
@@ -333,8 +326,91 @@ no tax as yet grown on them</div> -->
 				}
 				scene.add( limboTransform );
 
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				// create a canvas element
+				var edgeOpsLine1 = 'peripheral collectors toward fine tuned tendings';
+				var edgeOperators = edgeOpsLine1.split("");
 
+				line1Transform = new THREE.Object3D();
 
+				for (var i = 0; i < edgeOperators.length; i++){
+					var canvasBlock = document.createElement('canvas');
+					var letter = canvasBlock.getContext('2d');
+					letter.font = "Italic Bold 40px Arial";
+					letter.fillStyle = '#e80288';
+					letter.scale(2, 2);
+					letter.fillText(edgeOperators[i], 0, 50);
+					// canvas contents will be used for a texture
+					var letterSkin = new THREE.Texture(canvasBlock)
+					letterSkin.needsUpdate = true;
+
+					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
+						letterMat.transparent = true;
+
+					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
+					letterPlane.position.set(100*i,50,0);
+					line1Transform.add(letterPlane);
+				}
+				scene.add( line1Transform );
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				// create a canvas element
+				var edgeOpsLine2 = 'edgewise rotations reeling rolling nimble in ways a flaunting hollows';
+				var edgeOperators = edgeOpsLine2.split("");
+
+				line2Transform = new THREE.Object3D();
+
+				for (var i = 0; i < edgeOperators.length; i++){
+					var canvasBlock = document.createElement('canvas');
+					var letter = canvasBlock.getContext('2d');
+					letter.font = "Italic Bold 40px Arial";
+					letter.fillStyle = '#ed8879';
+					letter.scale(2, 2);
+					letter.fillText(edgeOperators[i], 0, 50);
+					// canvas contents will be used for a texture
+					var letterSkin = new THREE.Texture(canvasBlock)
+					letterSkin.needsUpdate = true;
+
+					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
+						letterMat.transparent = true;
+
+					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
+					letterPlane.position.set(100*i,500,0);
+					letterPlane.rotation.y = (i/50)*Math.PI/2;
+					line2Transform.add(letterPlane);
+				}
+				scene.add( line2Transform );
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				// create a canvas element
+				var edgeOpsLine3 = 'the widest spice boulversé, blistering, swollen, gliding';
+				var edgeOperators = edgeOpsLine3.split("");
+
+				line3Transform = new THREE.Object3D();
+
+				for (var i = 0; i < edgeOperators.length; i++){
+					var canvasBlock = document.createElement('canvas');
+					var letter = canvasBlock.getContext('2d');
+					letter.font = "Italic Bold 40px Arial";
+					letter.fillStyle = '#f2911b';
+					letter.scale(2, 2);
+					letter.fillText(edgeOperators[i], 0, 50);
+					// canvas contents will be used for a texture
+					var letterSkin = new THREE.Texture(canvasBlock)
+					letterSkin.needsUpdate = true;
+
+					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
+						letterMat.transparent = true;
+
+					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
+					letterPlane.position.set(10*i -farDist/2,-50,-farDist*Math.sin((i/100)*Math.PI) );
+					letterPlane.rotation.z = (i/50)*Math.PI/2;
+					line3Transform.add(letterPlane);
+				}
+				scene.add( line3Transform );
+				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
+				line2Transform.rotation.z = Math.PI/3;
+				line3Transform.rotation.y = Math.PI/1.7;
 				//INIT END
 			}
 
@@ -352,6 +428,13 @@ no tax as yet grown on them</div> -->
 			// load a sound and set it as the Audio object's buffer
 			var audioLoader = new THREE.AudioLoader();
 
+			var claggy = new THREE.Audio(listener);
+			audioLoader.load('/assets/buffers/claggy.mp3', function(buffer) {
+				claggy.setBuffer(buffer);
+				claggy.setVolume(1.0);
+				claggy.play();
+			});
+
 			//MOUSE INTERACTIONS
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -367,7 +450,7 @@ no tax as yet grown on them</div> -->
 				dummyX = Math.min(Math.max(dummyX + event.deltaX, 0), 800);
 				dummyY = Math.min(Math.max(dummyY + event.deltaY, 100), 800);
 				mouseFX.coordinates(dummyX, dummyY);
-				console.log([dummyX, dummyY]);
+				//console.log([dummyX, dummyY]);
 			}
 			function onDocumentMouseMove( event ) {
 				//console.log(event);
@@ -468,12 +551,19 @@ no tax as yet grown on them</div> -->
 			}
 
 			function render() {
-				//move camera view
-				theta += 0.1;
 
+				//move camera view
 				camera.position.x += (mouseX - camera.position.x) * 0.05;
 				camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
 
+				camera.lookAt( scene.position );
+				camera.updateMatrixWorld();
+
+				// find intersections
+				raycaster.setFromCamera( mouse, camera );
+
+
+				//move transform groups
 				for(var i=0; i<14; i++) {
 					growthTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
 					spongeTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 90 + theta ));
@@ -488,19 +578,21 @@ no tax as yet grown on them</div> -->
 					limboTransform.children[i].position.z = THREE.Math.euclideanModulo(limboTransform.children[i].position.z + 1, farDist/2);
 				}
 
-				camera.lookAt( scene.position );
-				camera.updateMatrixWorld();
+				//WIGGLE WORDS
+				for(var i=0; i<line1Transform.children.length; i++){
+					line1Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
+					line1Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
 
-				// find intersections
-				raycaster.setFromCamera( mouse, camera );
-				var intersects = raycaster.intersectObjects( scene.children, true );
-				if ( intersects.length > 0 ) {
-					sphereInter.visible = true;
-					sphereInter.position.copy( intersects[ 0 ].point );
-				} else {
-					sphereInter.visible = false;
+					line2Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
+					line2Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
+
+					line3Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
+					line3Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
 				}
+				//line1Transform.children[0].position.y = 100*Math.sin(THREE.Math.degToRad(100*theta));
+				//line1Transform.children[0].position.x = 100*Math.sin(THREE.Math.degToRad(10*theta));
 
+				//scaling for clicking on thingies
 				growthTransform.children[gi].scale.x = 1 + (0.125*Math.sin(0.20*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/4);
 				growthTransform.children[gi].scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/2);
 				growthTransform.children[gi].scale.z = 1 + (0.125*Math.sin(0.23*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs);
@@ -521,6 +613,7 @@ no tax as yet grown on them</div> -->
 				limboTransform.children[li].scale.y = 1 + (0.125*Math.sin(0.25*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls + Math.PI/2);
 				limboTransform.children[li].scale.z = 1 + (0.125*Math.sin(0.23*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls);
 
+				theta += 0.1;
 				gs += 0.1;
 				ss += 0.1;
 				ps += 0.1;
