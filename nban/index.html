@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<img id="sunset" src="assets/icons/jonicus/sunset.jpeg" alt="copey">
 	<head>
 		<title>Speedy-Edge-Operators</title>
 		<meta charset="utf-8">
@@ -10,100 +11,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
 		<style>
 
+		#sunset {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 120vh;
+			z-index: -1;
+    }
 			body {
 				height: 100vh;
-				/* background-color: #3d30c2; // ultramaine #7db8af; seafoam chalk //  */
-				background-image: linear-gradient(to left, #7db8af, #3d30c2);
-				/* margin: 0;
-				padding: 0; */
 				overflow: hidden;
 			}
 
-			/* body {
-	  margin: 0;
-		background-image: linear-gradient(#7db8af, #3d30c2);
-} */
-
-			/* #edge0ps {
-				position: absolute;
-				top: 200px;
-				width: 100%;
-				font-family: 'Helvetica', 'Arial', sans-serif;
-				color: #ffffff;
-				font-style: italic;
-				font-weight: bold;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
-
-			#lines {
-				position: absolute;
-				top: 240px;
-				width: 100%;
-				font-family: 'Helvetica', 'Arial', sans-serif;
-				color: #ffffff;
-				font-style: italic;
-				font-weight: bold;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			} */
 		</style>
 	</head>
 	<body>
-		<!-- <div id="edge0ps">edge.ops</div>
-		<b>
-		<div id="lines">peripheral collectors
-toward fine tuned tendings
-edgewise rotations
-reeling rolling
-nimble in ways a flaunting hollows
-long billows alighten lofty
-glooping bog gulping stodge
-porous plobs un/in-folding
-the widest spice
-boulversé
-blistering, swollen, gliding,
-peripheral jitters, landing, liken
-here they roll and clump and bounce
-speedy edge operators
-flagrant oscillators
-full ledge pendulous parsings
-onieric trajectories
-creatures lustfully cling to curves
-screaching with laughter through latent surrounds
-tenuous agitations see
-an ecology of speeds, a processual rotunda
-finding tinies in-between
-an operative-consistency holds a field in its spread
-crispy green rhythmmachines,
-slow big and blowy
-oozing fabulatory ontologies of vibrational force
-no tax as yet grown on them</div> -->
+
 		<div id="canvas-wrapper" aria-label="non-being ad nauseam"></div>
 		<script type="module">
 
 			const nearDist = 0.1;
 			const farDist = 5000;
+			const card = 16;
 
 			var container;
 			var camera, scene, raycaster, renderer, sphereInter;
-			var growthTransform, spongeTransform, ippTransform, runningTransform, limboTransform;
-			var line1Transform, line2Transform, line3Transform;
+			var thingieTransform, spongeTransform;
 
 			var mouse = new THREE.Vector2();
 			var radius = 100, theta = 0;
 			var gs = 0;
 			var gi = 0;
-			var ss = 0;
-			var si = 0;
-			var ps = 0;
-			var pi = 0;
-			var rs = 0;
-			var ri = 0;
-			var ls = 0;
-			var li = 0;
 
 			let mouseX = 0;
 			let mouseY = 0;
@@ -148,25 +87,35 @@ no tax as yet grown on them</div> -->
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
-				//CREATE THINGIES
+				//CREATE GEOMETRIES
 				const cubeSize = 120;
 				const glob = new THREE.SphereBufferGeometry(cubeSize, cubeSize/3, cubeSize/3);
 				const field = new THREE.PlaneBufferGeometry(cubeSize*2, cubeSize*2);
 
-				//GROWTH
-				const growth = new THREE.TextureLoader();
-				const growthMat = new THREE.MeshBasicMaterial({
-					map: growth.load("assets/icons/growth-swirl.png"), transparent: true
-				});
-				growthTransform = new THREE.Object3D();
+				//CREATE THINGIES
+				const skinFiles = [];
+				const skinPaths = ['assets/icons/jonicus/net.png', 'assets/icons/jonicus/1000.png', 'assets/icons/jonicus/blend.png', 'assets/icons/jonicus/leaf.png'];
+				const skins = [];
+				for(i=0; i<skinPaths.length; i++){
+					skinFiles[i] = new THREE.TextureLoader();
+					skins[i] = new THREE.MeshBasicMaterial({ map: skinFiles[i].load(skinPaths[i]), transparent: true });
+				}
+				thingieTransform = new THREE.Object3D();
 
-				for ( var i = 0; i < 14; i ++ ) {
-
-					const object = new THREE.Mesh(glob, growthMat);
+				for ( var i = 0; i < (card*3); i ++ ) {
+					var object;
+					var chooseSkin;
+					if(Math.random()<0.5){
+						chooseSkin = skins[Math.floor(Math.random()*skins.length)];
+						object = new THREE.Mesh(glob, chooseSkin );
+					} else {
+						chooseSkin = skins[Math.floor(Math.random()*skins.length)];
+						object = new THREE.Mesh(field, chooseSkin );
+					}
 					const dist = farDist / 3;
 					const distDouble = dist * 2;
 					const tau = 2 * Math.PI;
-					const size = Math.random()+0.2;
+					const size = (10*Math.random()) + 0.2;
 
 					object.position.x = Math.random() * distDouble - dist;
 					object.position.y = Math.random() * distDouble - dist;
@@ -178,262 +127,13 @@ no tax as yet grown on them</div> -->
 				  object.scale.y = size;
 				  object.scale.z = size;
 
-					growthTransform.add( object );
+					thingieTransform.add( object );
 				}
-				scene.add( growthTransform );
+				scene.add( thingieTransform );
 
 
-
-				//SPONGES
-				const sponge = new THREE.TextureLoader();
-				const spongeMatOrange = new THREE.MeshBasicMaterial({
-				  map: sponge.load('assets/icons/orange-ip.png'), transparent: true
-				});
-				const spongeMatBlue = new THREE.MeshBasicMaterial({
-				  map: sponge.load('assets/icons/sponge-ip.png'), transparent: true
-				});
-				spongeTransform = new THREE.Object3D();
-
-				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if(Math.random()<0.5){
-						object = new THREE.Mesh(glob, spongeMatOrange );
-					} else {
-						object = new THREE.Mesh(glob, spongeMatBlue );
-					}
-					const dist = farDist / 3;
-					const distDouble = dist * 2;
-					const tau = 2 * Math.PI;
-					const size = (Math.random()+0.5)*2;
-
-					object.position.x = Math.random() * distDouble - dist;
-					object.position.y = Math.random() * distDouble - dist;
-					object.position.z = Math.random() * distDouble - dist;
-					object.rotation.x = Math.random() * tau;
-					object.rotation.y = Math.random() * tau;
-					object.rotation.z = Math.random() * tau;
-					object.scale.x = size;
-					object.scale.y = size;
-					object.scale.z = size;
-
-					spongeTransform.add( object );
-				}
-				scene.add( spongeTransform );
-
-
-
-				//IPS
-				const ipp = new THREE.TextureLoader();
-				const ippMat = new THREE.MeshBasicMaterial({
-				  map: ipp.load('assets/icons/ip2.png'), transparent: true
-				});
-				const octoMat = new THREE.MeshBasicMaterial({
-				  map: ipp.load('assets/icons/octo.png'), transparent: true
-				});
-				ippTransform = new THREE.Object3D();
-
-				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if (Math.random()<0.5){
-						object = new THREE.Mesh(glob, ippMat);
-					} else {
-						object = new THREE.Mesh(glob, octoMat);
-					}
-
-					const dist = farDist / 3;
-					const distDouble = dist * 2;
-					const tau = 2 * Math.PI;
-					const size = Math.random()+0.2;
-
-					object.position.x = Math.random() * distDouble - dist;
-					object.position.y = Math.random() * distDouble - dist;
-					object.position.z = Math.random() * distDouble - dist;
-					object.rotation.x = Math.random() * tau;
-					object.rotation.y = Math.random() * tau;
-					object.rotation.z = Math.random() * tau;
-					object.scale.x = size;
-					object.scale.y = size;
-					object.scale.z = size;
-
-					ippTransform.add( object );
-				}
-				scene.add( ippTransform );
-
-
-
-				//RUNNING
-				const running = new THREE.TextureLoader();
-				const runningMat = new THREE.MeshBasicMaterial({
-				  map: running.load('assets/icons/running.png'), transparent: true
-				});
-				const guavaMat = new THREE.MeshBasicMaterial({
-				  map: running.load('assets/icons/guavas.png'), transparent: true
-				});
-				runningTransform = new THREE.Object3D();
-
-				for ( var i = 0; i < 14; i ++ ) {
-					var object;
-					if(Math.random()<0.5){
-						object = new THREE.Mesh(glob, runningMat);
-					} else {
-						object = new THREE.Mesh(field, guavaMat);
-					}
-					const dist = farDist / 3;
-					const distDouble = dist * 2;
-					const tau = 2 * Math.PI;
-					const size = Math.random()+0.2;
-
-					object.position.x = Math.random() * distDouble - dist;
-					object.position.y = Math.random() * distDouble - dist;
-					object.position.z = Math.random() * distDouble - dist;
-					object.rotation.x = Math.random() * tau;
-					object.rotation.y = Math.random() * tau;
-					object.rotation.z = Math.random() * tau;
-					object.scale.x = size;
-					object.scale.y = size;
-					object.scale.z = size;
-
-					runningTransform.add( object );
-				}
-				scene.add( runningTransform );
-
-				//LIMBO
-				const limbo = new THREE.TextureLoader();
-				const limboMat = new THREE.MeshBasicMaterial({
-				  map: limbo.load('assets/icons/limbo.png'), transparent: true
-				});
-				limboTransform = new THREE.Object3D();
-
-				for ( var i = 0; i < 14; i ++ ) {
-
-					const object = new THREE.Mesh(glob, limboMat);
-					const dist = farDist / 3;
-					const distDouble = dist * 2;
-					const tau = 2 * Math.PI;
-					const size = Math.random()+0.2;
-
-					object.position.x = Math.random() * distDouble - dist;
-					object.position.y = Math.random() * distDouble - dist;
-					object.position.z = Math.random() * distDouble - dist;
-					object.rotation.x = Math.random() * tau;
-					object.rotation.y = Math.random() * tau;
-					object.rotation.z = Math.random() * tau;
-					object.scale.x = size;
-					object.scale.y = size;
-					object.scale.z = size;
-
-					limboTransform.add( object );
-				}
-				scene.add( limboTransform );
-
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				// create a canvas element
-				var edgeOpsLine1 = 'peripheral collectors toward fine tuned tendings';
-				var edgeOperators = edgeOpsLine1.split("");
-
-				line1Transform = new THREE.Object3D();
-
-				for (var i = 0; i < edgeOperators.length; i++){
-					var canvasBlock = document.createElement('canvas');
-					var letter = canvasBlock.getContext('2d');
-					letter.font = "Italic Bold 40px Arial";
-					letter.fillStyle = '#e80288';
-					letter.scale(2, 2);
-					letter.fillText(edgeOperators[i], 0, 50);
-					// canvas contents will be used for a texture
-					var letterSkin = new THREE.Texture(canvasBlock)
-					letterSkin.needsUpdate = true;
-
-					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
-						letterMat.transparent = true;
-
-					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
-					letterPlane.position.set(100*i,50,0);
-					line1Transform.add(letterPlane);
-				}
-				scene.add( line1Transform );
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				// create a canvas element
-				var edgeOpsLine2 = 'edgewise rotations reeling rolling nimble in ways a flaunting hollows';
-				var edgeOperators = edgeOpsLine2.split("");
-
-				line2Transform = new THREE.Object3D();
-
-				for (var i = 0; i < edgeOperators.length; i++){
-					var canvasBlock = document.createElement('canvas');
-					var letter = canvasBlock.getContext('2d');
-					letter.font = "Italic Bold 40px Arial";
-					letter.fillStyle = '#ed8879';
-					letter.scale(2, 2);
-					letter.fillText(edgeOperators[i], 0, 50);
-					// canvas contents will be used for a texture
-					var letterSkin = new THREE.Texture(canvasBlock)
-					letterSkin.needsUpdate = true;
-
-					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
-						letterMat.transparent = true;
-
-					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
-					letterPlane.position.set(100*i,500,0);
-					letterPlane.rotation.y = (i/50)*Math.PI/2;
-					line2Transform.add(letterPlane);
-				}
-				scene.add( line2Transform );
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				// create a canvas element
-				var edgeOpsLine3 = 'the widest spice boulversé, blistering, swollen, gliding';
-				var edgeOperators = edgeOpsLine3.split("");
-
-				line3Transform = new THREE.Object3D();
-
-				for (var i = 0; i < edgeOperators.length; i++){
-					var canvasBlock = document.createElement('canvas');
-					var letter = canvasBlock.getContext('2d');
-					letter.font = "Italic Bold 40px Arial";
-					letter.fillStyle = '#f2911b';
-					letter.scale(2, 2);
-					letter.fillText(edgeOperators[i], 0, 50);
-					// canvas contents will be used for a texture
-					var letterSkin = new THREE.Texture(canvasBlock)
-					letterSkin.needsUpdate = true;
-
-					var letterMat = new THREE.MeshBasicMaterial( {map: letterSkin, side:THREE.DoubleSide } );
-						letterMat.transparent = true;
-
-					var letterPlane = new THREE.Mesh(new THREE.PlaneGeometry(canvasBlock.width, canvasBlock.height),letterMat);
-					letterPlane.position.set(10*i -farDist/2,-50,-farDist*Math.sin((i/100)*Math.PI) );
-					letterPlane.rotation.z = (i/50)*Math.PI/2;
-					line3Transform.add(letterPlane);
-				}
-				scene.add( line3Transform );
-				/////////////////////////////TEXT/////////////////////////////////////////////////////////////
-				line2Transform.rotation.z = Math.PI/3;
-				line3Transform.rotation.y = Math.PI/1.7;
-				//INIT END
 			}
 
-			// SOUND
-			var listener = new THREE.AudioListener();
-			camera.add(listener);
-
-			// create a global audio source
-			var arp = new THREE.Audio( listener );
-			var buoys = new THREE.Audio( listener );
-			var crispy = new THREE.Audio( listener );
-			var globbin = new THREE.Audio( listener );
-			var maap = new THREE.Audio( listener );
-
-			// load a sound and set it as the Audio object's buffer
-			var audioLoader = new THREE.AudioLoader();
-
-			var claggy = new THREE.Audio(listener);
-			audioLoader.load('/assets/buffers/claggy.mp3', function(buffer) {
-				claggy.setBuffer(buffer);
-				claggy.setVolume(1.0);
-				claggy.play();
-			});
 
 			//MOUSE INTERACTIONS
 			function onWindowResize() {
@@ -447,10 +147,10 @@ no tax as yet grown on them</div> -->
 			function onMouseWheel( event ) {
 				//event.preventDefault();
 				//console.log(event);
-				dummyX = Math.min(Math.max(dummyX + event.deltaX, 0), 800);
-				dummyY = Math.min(Math.max(dummyY + event.deltaY, 100), 800);
+				dummyX = Math.min(Math.max(dummyX + event.deltaX, 350), 800);
+				dummyY = Math.min(Math.max(dummyY + event.deltaY, 250), 800);
 				mouseFX.coordinates(dummyX, dummyY);
-				//console.log([dummyX, dummyY]);
+				console.log([dummyX, dummyY]);
 			}
 			function onDocumentMouseMove( event ) {
 				//console.log(event);
@@ -464,84 +164,16 @@ no tax as yet grown on them</div> -->
 				event.preventDefault();
 				mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
 
-				var interGrowth = raycaster.intersectObjects( growthTransform.children, true );
-				var interSponge = raycaster.intersectObjects( spongeTransform.children, true );
-				var interIpp = raycaster.intersectObjects( ippTransform.children, true );
-				var interRunning = raycaster.intersectObjects( runningTransform.children, true );
-				var interLimbo = raycaster.intersectObjects( limboTransform.children, true );
+				var interThingie = raycaster.intersectObjects( thingieTransform.children, true );
 
-				if ( interGrowth.length > 0 ) {
+				if ( interThingie.length > 0 ) {
 
-					for(let i=0;i<growthTransform.children.length; i++) {
-						if (interGrowth[0].object == growthTransform.children[i]) {
+					for(let i=0;i<thingieTransform.children.length; i++) {
+						if (interThingie[0].object == thingieTransform.children[i]) {
 							gi = i;
 							gs = 0;
-							audioLoader.load('/assets/buffers/arp.mp3', function(buffer) {
-								arp.setBuffer(buffer);
-								arp.setVolume( 1.0 );
-								arp.play();
-							});
 						}
 					}
-
-				}
-				if ( interSponge.length > 0 ) {
-
-					for(let i=0;i<spongeTransform.children.length; i++) {
-						if (interSponge[0].object == spongeTransform.children[i]) {
-							si = i;
-							ss = 0;
-							audioLoader.load('/assets/buffers/buoyverse.mp3', function(buffer) {
-								buoys.setBuffer(buffer);
-								buoys.setVolume( 1.0 );
-								buoys.play();
-							});
-						}
-					}
-
-				}
-				if ( interIpp.length > 0 ) {
-
-					for(let i=0;i<ippTransform.children.length; i++) {
-						if (interIpp[0].object == ippTransform.children[i]) {
-							pi = i;
-							ps = 0;
-							audioLoader.load('/assets/buffers/maap.mp3', function(buffer) {
-								maap.setBuffer(buffer);
-								maap.setVolume( 1.0 );
-								maap.play();
-							});
-						}
-					}
-
-				}
-				if ( interRunning.length > 0 ) {
-					for(let i=0;i<runningTransform.children.length; i++) {
-						if (interRunning[0].object == runningTransform.children[i]) {
-							ri = i;
-							rs = 0;
-							audioLoader.load('/assets/buffers/crispykeys.mp3', function(buffer) {
-								crispy.setBuffer(buffer);
-								crispy.setVolume( 1.0 );
-								crispy.play();
-							});
-						}
-					}
-
-				}
-				if ( interLimbo.length > 0 ) {
-					for(let i=0;i<limboTransform.children.length; i++) {
-						if (interLimbo[0].object == limboTransform.children[i]) {
-							li = i;
-							ls = 0;
-							audioLoader.load('/assets/buffers/globz.mp3', function(buffer) {
-								globbin.setBuffer(buffer);
-								globbin.setVolume( 1.0 );
-								globbin.play();
-							});
-						}
-					}
-
 				}
 				}
 
@@ -563,62 +195,34 @@ no tax as yet grown on them</div> -->
 				raycaster.setFromCamera( mouse, camera );
 
 
-				//move transform groups
-				for(var i=0; i<14; i++) {
-					growthTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
-					spongeTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 90 + theta ));
-					ippTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( 135 + theta ));
-					runningTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 45 + theta ));
-					limboTransform.children[i].rotation.z = 2*Math.PI*Math.sin( THREE.Math.degToRad( 180 + theta ));
 
-					growthTransform.children[i].position.x = THREE.Math.euclideanModulo(growthTransform.children[i].position.x + 4, farDist/2);
-					spongeTransform.children[i].position.y = THREE.Math.euclideanModulo(spongeTransform.children[i].position.y + 5, farDist/2);
-					ippTransform.children[i].position.x = THREE.Math.euclideanModulo(ippTransform.children[i].position.x + 3, farDist/2);
-					runningTransform.children[i].position.y = THREE.Math.euclideanModulo(runningTransform.children[i].position.y + 2, farDist/2);
-					limboTransform.children[i].position.z = THREE.Math.euclideanModulo(limboTransform.children[i].position.z + 1, farDist/2);
+				for(var i=0; i<thingieTransform.length; i++) {
+					thingieTransform.children[i].rotation.x = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
+					thingieTransform.children[i].position.x = THREE.Math.euclideanModulo(thingieTransform.children[i].position.x + 4, farDist/2);
+					// thingieTransform.children[(i*3)+1].position.y = THREE.Math.euclideanModulo(thingieTransform.children[i].position.y + 4, farDist/2);
+					// thingieTransform.children[(i*3)+2].position.z = THREE.Math.euclideanModulo(thingieTransform.children[i].position.z + 4, farDist/2);
+
 				}
 
-				//WIGGLE WORDS
-				for(var i=0; i<line1Transform.children.length; i++){
-					line1Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
-					line1Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
+				for(var i=0; i<card; i++) {
+					thingieTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
+					thingieTransform.children[i+16].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 90 + theta ));
+					thingieTransform.children[i+32].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( 180 + theta ));
 
-					line2Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
-					line2Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
+					thingieTransform.children[i].position.x = THREE.Math.euclideanModulo(thingieTransform.children[i].position.x + 3, farDist/2);
+					thingieTransform.children[i+16].position.y = THREE.Math.euclideanModulo(thingieTransform.children[i+16].position.y + 5, farDist/2);
+					thingieTransform.children[i+32].position.z = THREE.Math.euclideanModulo(thingieTransform.children[i+32].position.z + 2, farDist/2);
 
-					line3Transform.children[i].position.y = Math.sin(THREE.Math.degToRad(3*(theta/3+(i*Math.PI/2))))*100*Math.sin(THREE.Math.degToRad(10*(theta+(i*Math.PI/2))));
-					line3Transform.children[i].position.x = THREE.Math.euclideanModulo(line1Transform.children[i].position.x + 3, farDist*2) - farDist;
+
 				}
-				//line1Transform.children[0].position.y = 100*Math.sin(THREE.Math.degToRad(100*theta));
-				//line1Transform.children[0].position.x = 100*Math.sin(THREE.Math.degToRad(10*theta));
 
 				//scaling for clicking on thingies
-				growthTransform.children[gi].scale.x = 1 + (0.125*Math.sin(0.20*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/4);
-				growthTransform.children[gi].scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/2);
-				growthTransform.children[gi].scale.z = 1 + (0.125*Math.sin(0.23*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs);
-
-				spongeTransform.children[si].scale.x = 1 + (0.125*Math.sin(0.20*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss + Math.PI/4);
-				spongeTransform.children[si].scale.y = 1 + (0.125*Math.sin(0.25*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss + Math.PI/2);
-				spongeTransform.children[si].scale.z = 1 + (0.125*Math.sin(0.23*ss)+0.5)*Math.exp((-1/2)*ss)*Math.sin(5*ss);
-
-				ippTransform.children[pi].scale.x = 1 + (0.125*Math.sin(0.20*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps + Math.PI/4);
-				ippTransform.children[pi].scale.y = 1 + (0.125*Math.sin(0.25*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps + Math.PI/2);
-				ippTransform.children[pi].scale.z = 1 + (0.125*Math.sin(0.23*ps)+0.5)*Math.exp((-1/2)*ps)*Math.sin(5*ps);
-
-				runningTransform.children[ri].scale.x = 1 + (0.125*Math.sin(0.20*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs + Math.PI/4);
-				runningTransform.children[ri].scale.y = 1 + (0.125*Math.sin(0.25*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs + Math.PI/2);
-				runningTransform.children[ri].scale.z = 1 + (0.125*Math.sin(0.23*rs)+0.5)*Math.exp((-1/2)*rs)*Math.sin(5*rs);
-
-				limboTransform.children[li].scale.x = 1 + (0.125*Math.sin(0.20*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls + Math.PI/4);
-				limboTransform.children[li].scale.y = 1 + (0.125*Math.sin(0.25*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls + Math.PI/2);
-				limboTransform.children[li].scale.z = 1 + (0.125*Math.sin(0.23*ls)+0.5)*Math.exp((-1/2)*ls)*Math.sin(5*ls);
+				thingieTransform.children[gi].scale.x = 1 + (0.125*Math.sin(0.20*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/4);
+				thingieTransform.children[gi].scale.y = 1 + (0.125*Math.sin(0.25*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs + Math.PI/2);
+				thingieTransform.children[gi].scale.z = 1 + (0.125*Math.sin(0.23*gs)+0.5)*Math.exp((-1/2)*gs)*Math.sin(5*gs);
 
 				theta += 0.1;
 				gs += 0.1;
-				ss += 0.1;
-				ps += 0.1;
-				rs += 0.1;
-				ls += 0.1;
 
 				renderer.render( scene, camera );
 			}
