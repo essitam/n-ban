@@ -15,15 +15,15 @@ function preload(){
   sponge = loadImage('assets/icons/sponge-ip.png');
   limbo = loadImage('assets/icons/limbo.png');
   //load soundfile
-  ephem = loadSound('assets/tracks/Ephemeral U 17-12-08.mp3');
-  latlm = loadSound('assets/tracks/Let A Thing Like Me.mp3');
-  nban = loadSound('assets/tracks/Non-Being Ad Nauseam.mp3');
-  ozone = loadSound('assets/tracks/Ozone Delicious 19-02-28.mp3');
-  claggy = loadSound('assets/tracks/Claggy 18-12-07.mp3');
-  edgeops = loadSound('assets/tracks/Edge Operators 19-10-21.mp3');
-  hcs = loadSound('assets/tracks/Hiding Clump Spirit 19-10-21.mp3');
-  ouro = loadSound('assets/tracks/Ouroboros 18-06-30-02.mp3');
-  rooibos = loadSound('assets/tracks/Rooibos 19-10-21.mp3');
+  ephem = loadSound('assets/tracks/01 Ephemeral U.mp3');
+  latlm = loadSound('assets/tracks/02 Let A Thing Like Me.mp3');
+  nban = loadSound('assets/tracks/03 Non-Being Ad Nauseam.mp3');
+  ozone = loadSound('assets/tracks/04 Ozone Delicious.mp3');
+  claggy = loadSound('assets/tracks/05 Claggy.mp3');
+  edgeops = loadSound('assets/tracks/06 Edge Operators.mp3');
+  hcs = loadSound('assets/tracks/07 Hiding Clump Spirit.mp3');
+  ouro = loadSound('assets/tracks/08 Ouroboros.mp3');
+  rooibos = loadSound('assets/tracks/09 Rooibos.mp3');
 }
 
 function setup() {
@@ -33,16 +33,6 @@ function setup() {
   icons = [growth, ball, guavas, ip, ipp, octo, orange, sponge, limbo];
   tracks = [ephem, latlm, nban, ozone, claggy, edgeops, hcs, ouro, rooibos];
   grad = ["ephem", "latlm", "nban", "ozone", "claggy", "edgeops", "hcs", "ouro", "rooibos"];
-
-  // ephem.onended(trigSound(latlm, "latlm"));
-  // latlm.onended(trigSound(nban, "nban"));
-  // nban.onended(trigSound(ozone, "ozone"));
-  // ozone.onended(trigSound(claggy, "claggy"));
-  // claggy.onended(trigSound(edgeops, "edgeops"));
-  // edgeops.onended(trigSound(hcs, "hcs"));
-  // hcs.onended(trigSound(ouro, "ouro"));
-  // ouro.onended(trigSound(rooibos, "rooibos"));
-  // rooibos.onended(trigSound(ephem, "ephem"));
 
   for (i = 0; i < icons.length; i++) {
     rects[i] = new Icon(icons[i], tracks[i], random(50, 80), random(50,windowWidth-80), random(50,windowHeight-80), null, grad[i]);
