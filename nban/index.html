@@ -4,16 +4,78 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>non-being ad nauseam</title>
-    <style> body {padding: 0; margin: 0;} </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <!-- added -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="./css/style.css"> -->
+    <!-- added -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
     <script src="js/thingie-icon.js"></script>
     <style>
-    html, body{
-      background: #1db5a1;
+    #cover {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      top:0; left: 0;
+      font-family: 'Roboto', 'Arial';
+      font-size: 22px;
+      text-align: center;
+      padding-top: 25%;
+      /* color: #ffffff; */
+      background-image: linear-gradient(315deg, #ffeaa6, #ff6982);
+      z-index:9999;
     }
-        div {
+    #p5Div, #threejsDiv {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #p5Div {
+      z-index: 1;
+    }
+
+    body{
+    padding: 0;
+    margin: 0;
+		height: 100vh;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: bold;
+		background-image: linear-gradient(315deg, #ffeaa6, #ff6982);
+		overflow: hidden;
+		}
+    .ephem{
+      background-image: linear-gradient(315deg, #ffeaa6, #ff6982);
+    }
+    .latlm{
+      background-image: linear-gradient(315deg, #e6dff2, #2e288a);
+    }
+    .nban{
+      background-image: linear-gradient(315deg, #f7ee88, #00bec4);
+    }
+    .ozone{
+      background-image: linear-gradient(315deg, #e06500, #ffe380);
+    }
+    .claggy{
+      background-image: linear-gradient(315deg, #7db8af, #3d30c2);
+    }
+    .edgeops{
+      background-image: linear-gradient(315deg, #fffa9c, #2b0059);
+    }
+    .hcs{
+      background-image: linear-gradient(315deg, #11f5c7, #f54e11);
+    }
+    .ouro{
+      background-image: linear-gradient(315deg, #00bcd9, #008a75);
+    }
+    .rooibos{
+      background-image: linear-gradient(315deg, #ffb8e0, #310085);
+    }
+
+        .hangin {
         width: 100px;
         height: 100px;
         background-color: red;
@@ -22,6 +84,7 @@
         animation-name: example;
         animation-duration: 6s;
         animation-iteration-count: infinite;
+        z-index: 2;
       }
 
       /* Safari 4.0 - 8.0 */
@@ -45,10 +108,53 @@
         66% {background-color: #ffe136;}
         100% {background-color: #db0f35;}
       }
+
+      .loadtext {
+      -webkit-animation-name: loading; /* Safari 4.0 - 8.0 */
+      -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+      animation-name: loading;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+    }
+
+    /* Safari 4.0 - 8.0 */
+    @-webkit-keyframes loading {
+      0% { color: #db0f35; }
+      50% { color: #1a00bf; }
+      100% { color: #db0f35; }
+    }
+
+    /* Standard syntax */
+    @keyframes loading {
+      0% { color: #db0f35; }
+      50% { color: #1a00bf; }
+      100% { color: #db0f35; }
+    }
     </style>
   </head>
   <body>
-    <script src="js/drag-thingie.js"></script>
+<!-- added -->
+<!-- <div id="loader-wrapper">
+  <div id="loader">
+
+</div>
+  <div class="loader-section section-left"></div>
+  <div class="loader-section section-right"></div>
+</div> -->
+<!-- added -->
+
+
+    <div id="p5Div">
+      <script src="js/drag-thingie.js"></script>
+    </div>
+    <div id="threejsDiv">
+      <script src="js/floating.js"></script>
+    </div>
+      <div id="cover" class="loadtext">loading...</div>
+
+      <!-- added -->
+      <!-- <script  src="./js/loader.js"></script> -->
+      <!-- added -->
 
   </body>
 </html>

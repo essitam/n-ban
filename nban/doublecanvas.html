@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>non-being ad nauseam</title>
+    <style> body {padding: 0; margin: 0;} </style>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script>
+    <style>
+      #p5Div, #threejsDiv {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #p5Div {
+        z-index: 1;
+      }
+    </style>
+	</head>
+	<body>
+    <div id='p5Div'></div>
+    <div id='threejsDiv'></div>
+    <script>
+
+      function setup() {
+        var c = createCanvas(windowWidth, windowHeight);
+        c.parent('p5Div');
+        fill('red');
+        ellipse(width / 2, height / 2, 80, 80);
+      }
+
+      var scene = new THREE.Scene();
+      var cam = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      var geometry = new THREE.BoxGeometry(1, 1, 1);
+      var material = new THREE.MeshBasicMaterial({
+        color: 0x00ff00
+      });
+      var cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
+
+      cam.position.z = 5;
+
+      var render = function() {
+        requestAnimationFrame(render);
+
+        cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+
+        renderer.render(scene, cam);
+      };
+
+      render();
+
+      </script>
+	</body>
+</html>

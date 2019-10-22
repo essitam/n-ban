@@ -1,9 +1,9 @@
 const nearDist = 0.1;
-const farDist = 5000;
-const card = 24;
+const farDist = 4000;
+const card = 12;
 
 var container;
-var camera, scene, raycaster, renderer, sphereInter;
+var cam, scene, raycaster, renderer, sphereInter;
 var thingieTransform;
 
 var mouse = new THREE.Vector2();
@@ -25,25 +25,20 @@ const mouseFX = {
 
 
 init();
-animate();
+// animate();
 
 
 function init() {
 
-  container = document.createElement( 'div' );
-  document.body.appendChild( container );
-
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, nearDist, farDist );
-  camera.position.x = farDist * -2;
-  camera.position.z = 500;
+  cam = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, nearDist, farDist );
+  cam.position.x = farDist * -2;
+  cam.position.z = farDist / 10;
 
   renderer = new THREE.WebGLRenderer( { alpha: true, antialias: true } );
-  //renderer.setClearColor("#3d30c2");
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
-  document.querySelector("#canvas-wrapper").appendChild(renderer.domElement);
-  container.appendChild( renderer.domElement );
+  document.body.appendChild(renderer.domElement);
 
   //MOUSE INTERACTIONS
   raycaster = new THREE.Raycaster();
@@ -63,7 +58,7 @@ function init() {
   //CREATE THINGIES
   const skinFiles = [];
   const skinPaths = [
-    'assets/icons/grendilla.png',
+    'assets/icons/grenadilla.png',
     'assets/icons/growth-swirl.png',
     'assets/icons/guavas.png',
     'assets/icons/octo.png',
@@ -90,10 +85,10 @@ function init() {
       chooseSkin = skins[Math.floor(Math.random()*skins.length)];
       object = new THREE.Mesh(field, chooseSkin );
     }
-    const dist = farDist / 3;
+    const dist = farDist / 4;
     const distDouble = dist * 2;
     const tau = 2 * Math.PI;
-    const size = (2*Math.random()) + 0.2;
+    const size = (2.5*Math.random()) + 0.5;
 
     object.position.x = Math.random() * distDouble - dist;
     object.position.y = Math.random() * distDouble - dist;
@@ -113,8 +108,8 @@ function init() {
 
 //MOUSE INTERACTIONS
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  cam.aspect = window.innerWidth / window.innerHeight;
+  cam.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
 }
 let dummyX=0;
@@ -163,14 +158,14 @@ function render() {
   // backdrop.style.backgroundImage = "linear-gradient(to left, #7db8af, #3d30c2)"";
 
   //move camera view
-  camera.position.x += (mouseX - camera.position.x) * 0.05;
-  camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
+  cam.position.x += (mouseX - cam.position.x) * 0.05;
+  cam.position.y += (mouseY * -1 - cam.position.y) * 0.05;
 
-  camera.lookAt( scene.position );
-  camera.updateMatrixWorld();
+  cam.lookAt( scene.position );
+  cam.updateMatrixWorld();
 
   // find intersections
-  raycaster.setFromCamera( mouse, camera );
+  raycaster.setFromCamera( mouse, cam );
 
   for(var i=0; i<card; i++) {
     thingieTransform.children[i].rotation.y = 2*Math.PI*Math.sin( THREE.Math.degToRad( theta ));
@@ -190,5 +185,5 @@ function render() {
   theta += 0.1;
   gsec += 0.1;
 
-  renderer.render( scene, camera );
+  renderer.render( scene, cam );
 }
